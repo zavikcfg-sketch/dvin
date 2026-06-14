@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Дашборд — VPN Admin{% endblock %}
+{% block nav %}
+<nav>
+  <a href="/admin/dashboard"><strong>VPN Admin</strong></a>
+  <a href="/admin/dashboard">Дашборд</a>
+  <a href="/admin/servers">Серверы</a>
+  <a href="/admin/users">Пользователи</a>
+</nav>
+{% endblock %}
+{% block content %}
+<h1>Дашборд</h1>
+<div class="stats">
+  <div class="stat"><div class="num">{{ users_count }}</div><div class="label">Пользователей</div></div>
+  <div class="stat"><div class="num">{{ active_subs }}</div><div class="label">Активных подписок</div></div>
+  <div class="stat"><div class="num">{{ servers|length }}</div><div class="label">Серверов</div></div>
+</div>
+<div class="card">
+  <h2 style="margin-bottom: 1rem;">Серверы</h2>
+  <table>
+    <tr><th>Имя</th><th>Хост</th><th>Пользователи</th><th>Статус</th></tr>
+    {% for s in servers %}
+    <tr>
+      <td>{{ s.name }} ({{ s.country }})</td>
+      <td>{{ s.host }}:{{ s.port }}</td>
+      <td>{{ s.current_users }}/{{ s.max_users }}</td>
+      <td><span class="badge badge-{{ s.status.value }}">{{ s.status.value }}</span></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">Нет серверов. <a href="/admin/servers" style="color:#6366f1">Добавить</a></td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

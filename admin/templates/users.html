@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Пользователи — VPN Admin{% endblock %}
+{% block nav %}
+<nav>
+  <a href="/admin/dashboard"><strong>VPN Admin</strong></a>
+  <a href="/admin/dashboard">Дашборд</a>
+  <a href="/admin/servers">Серверы</a>
+  <a href="/admin/users">Пользователи</a>
+</nav>
+{% endblock %}
+{% block content %}
+<h1>Пользователи</h1>
+<div class="card">
+  <table>
+    <tr><th>ID</th><th>Telegram</th><th>Имя</th><th>Подписка</th><th>Дата</th></tr>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.telegram_id }}</td>
+      <td>@{{ u.username or '—' }}</td>
+      <td>{{ u.first_name or '—' }}</td>
+      <td>{% if u.subscription %}{{ u.subscription.status.value }} до {{ u.subscription.expires_at.strftime('%d.%m.%Y') }}{% else %}—{% endif %}</td>
+      <td>{{ u.created_at.strftime('%d.%m.%Y') }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

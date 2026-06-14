@@ -1,0 +1,35 @@
+services:
+  bot:
+    build: .
+    command: python -m bot.main
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  api:
+    build: .
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8080
+    env_file: .env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: vpn
+      POSTGRES_PASSWORD: vpn_password
+      POSTGRES_DB: vpn_bot
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  pgdata:

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Серверы — VPN Admin{% endblock %}
+{% block nav %}
+<nav>
+  <a href="/admin/dashboard"><strong>VPN Admin</strong></a>
+  <a href="/admin/dashboard">Дашборд</a>
+  <a href="/admin/servers">Серверы</a>
+  <a href="/admin/users">Пользователи</a>
+</nav>
+{% endblock %}
+{% block content %}
+<h1>VPN-серверы</h1>
+<div class="card">
+  <h2 style="margin-bottom: 1rem;">Добавить сервер</h2>
+  <form method="post" action="/admin/servers/add">
+    <input name="name" placeholder="Имя (NL-1)" required>
+    <input name="host" placeholder="IP или домен сервера" required>
+    <input name="port" type="number" value="443" placeholder="Порт">
+    <input name="country" value="NL" placeholder="Код страны (NL, DE, FI)">
+    <input name="public_key" placeholder="Reality Public Key" required>
+    <input name="short_id" placeholder="Short ID" required>
+    <input name="sni" value="www.microsoft.com" placeholder="SNI (dest)">
+    <button type="submit">Добавить</button>
+  </form>
+</div>
+<div class="card">
+  <table>
+    <tr><th>Имя</th><th>Хост</th><th>SNI</th><th>Ключи</th><th>Статус</th></tr>
+    {% for s in servers %}
+    <tr>
+      <td>{{ s.name }}</td>
+      <td>{{ s.host }}:{{ s.port }}</td>
+      <td>{{ s.sni }}</td>
+      <td>{{ s.current_users }}/{{ s.max_users }}</td>
+      <td>{{ s.status.value }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}
